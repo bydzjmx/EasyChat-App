@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+	<link href="css/header.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+		
+		//移动设备就绪完成后,做如下操作
+		mui.plusReady(function () {
+		    plus.navigator.setStatusBarBackground("#c9394a");
+			plus.navigator.setStatusBarStyle("light");
+		})
+    </script>
+</head>
+<body>
+	<!-- 定义标题栏 -->
+	<header class="mui-bar mui-bar-nav title">
+		<h1 class="mui-title title-color" id="chat_title">EasyChat</h1>
+	</header>
+	
+	<nav class="mui-bar mui-bar-tab">
+		<a class="mui-tab-item mui-active" tabindex="0">
+			<span class="mui-icon mui-icon-weixin"></span>
+			<span class="mui-tab-label">聊天</span>
+		</a>
+		<a class="mui-tab-item" tabindex="1">
+			<span class="mui-icon mui-icon-person"></span>
+			<span class="mui-tab-label">通讯录</span>
+		</a>
+		<a class="mui-tab-item" tabindex="2">
+			<span class="mui-icon mui-icon-paperplane"></span>
+			<span class="mui-tab-label">发现</span>
+		</a>
+		<a class="mui-tab-item" tabindex="3">
+			<span class="mui-icon mui-icon-home"></span>
+			<span class="mui-tab-label">我</span>
+		</a>
+	</nav>
+	
+	<!-- 创建子页面数组 -->
+	<script type="text/javascript">
+		
+		var easychatArray = [
+			{
+				pageId: "easychat-chatList.html",
+				pageUrl: "easychat-chatList.html" ,
+			},
+			{
+				pageId: "easychat-contact.html",
+				pageUrl: "easychat-contact.html" 
+			},
+			{
+				pageId: "easychat-discovery.html",
+				pageUrl: "easychat-discovery.html" 
+			},
+			{
+				pageId: "easychat-me.html",
+				pageUrl: "easychat-me.html" 
+			}
+		];
+		
+		//设置子页面的样式
+		var pageStyle = {
+			top: "44px",
+			bottom: "50px"
+		}
+		
+		/* 通过webview将子页面加入到主页面中 */
+		mui.plusReady(function () {
+			
+			//禁止返回到登录页面
+			mui.back = function(){
+				return false;
+			}
+			
+			// 对网络连接进行事件监听
+			netChangeSwitch();
+			
+			//获取当前webview对象
+		    var indexWebView = plus.webview.currentWebview();
+			//将数组的页面追加进当前的主页webview
+			for(var i=0; i < easychatArray.length; i++){
+				var chatPage = plus.webview.create(easychatArray[i].pageUrl,easychatArray[i].pageId,
+				pageStyle);
+				//创建完后对webview进行隐藏
+				chatPage.hide();
+				//追加每一个子页面到主页面
+				indexWebView.append(chatPage);
+			}
+			//设置默认显示的页面
+			plus.webview.show(easychatArray[0].pageId);
+			
+			//批量绑定tap事件,展示不同的页面
+			//思路: 点击事件,传递点击的子页面的id,显示当前页面,同时隐藏其他页面
+			mui(".mui-bar-tab").on("tap","a",function(){
+				//获取点击的id
+				var tabindex = this.getAttribute("tabindex");
+				//显示指定的页面
+				plus.webview.show(easychatArray[tabindex].pageId,"fade-in",200);
+				//隐藏其他页面
+				for (var i=0; i < easychatArray.length; i++){
+					if (i != tabindex){
+						//隐藏
+						plus.webview.hide(easychatArray[i].pageId,"fade-out",200)
+					}
+				}
+			})
+		
+			//延时加载
+			setTimeout("initData()","200");
+		
+		})
+		
+		// 监听网络状态更改
+		function netChangeSwitch(){
+			document.addEventListener("netchange", function(){
+				// 网络状态获取和判断
+				var connectionStatus = plus.networkinfo.getCurrentType();
+				if (connectionStatus != 0 && connectionStatus != 1) {
+					// 重新打开网络连接
+					var chat_title = document.getElementById("chat_title");
+					chat_title.innerHTML = "<b>EasyChat</b>";
+				} else {
+					// 关闭网络连接
+					var chat_title = document.getElementById("chat_title");
+					chat_title.innerHTML = "<b>EasyChat(未连接)</b>";
+				}
+			});
+		}
+		
+		//预加载
+		function initData(){
+			//触发聊天和我的,页面的刷新功能
+			var easychat_chatList = plus.webview.getWebviewById("easychat-chatList.html");
+			mui.fire(easychat_chatList,"refresh");
+			
+			var easychat_me = plus.webview.getWebviewById("easychat-me.html");
+			mui.fire(easychat_me,"refresh");
+		}
+	</script>
+</body>
+</html>

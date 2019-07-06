@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		
+		<div class="mui-content">
+			<ul class="mui-table-view">
+				<li id="Moments" class="mui-table-view-cell mui-media">					
+						<img class="mui-media-object mui-pull-left" src="image/friends.png"
+						 style="max-width: 24px;height: 24px;">						
+						<p class="mui-ellipsis"
+						 style="line-height: 24px; color: #000000; font-size: 16px;">
+							<span style="margin-left: 10px;">朋友圈</span>
+						</p>
+				</li>
+			</ul>
+			<br />
+			<ul class="mui-table-view">
+				<li id="searchFriends" class="mui-table-view-cell mui-media">					
+						<img class="mui-media-object mui-pull-left" src="image/addfriends.png"
+						 style="max-width: 24px;height: 24px;">						
+						<p class="mui-ellipsis"
+						 style="line-height: 24px; color: #000000; font-size: 16px;">
+							<span style="margin-left: 10px;">添加好友</span>
+						</p>
+				</li>
+				<li id="scanQRCode" class="mui-table-view-cell mui-media">					
+						<img class="mui-media-object mui-pull-left" src="image/scanscan.png"
+						 style="max-width: 24px;height: 24px;">						
+						<p class="mui-ellipsis"
+						 style="line-height: 24px; color: #000000; font-size: 16px;">
+							<span style="margin-left: 10px;">扫一扫</span>
+						</p>
+				</li>
+			</ul>
+		</div>
+	
+		<script src="js/mui.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			
+			mui.plusReady(function () {
+			    
+				//点击头像栏时，弹出窗口,修改头像
+				var searchFriends = document.getElementById("searchFriends");
+				searchFriends.addEventListener("tap",function(){
+					//弹出新的页面
+					mui.openWindow("searchFriends.html","searchFriends.html");
+				});
+				
+				//点击扫一扫时，弹出扫一扫窗口
+				var scanQRCode = document.getElementById("scanQRCode");
+				scanQRCode.addEventListener("tap",function(){
+					//弹出新的页面
+					mui.openWindow("scanme.html","scanme.html");
+				});
+			});
+			
+		</script>
+	</body>
+
+</html>

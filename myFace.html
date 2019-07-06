@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link href="css/header.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		
+		<!-- 标题栏 -->
+		<header class="mui-bar mui-bar-nav title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white;"></a>
+			<!-- 制作...按键 -->
+			<a id="openMenu" class="mui-icon mui-icon-right-nav mui-pull-right" style="color: white;">...</a>
+			<h1 class="mui-title title-color">我的头像</h1>
+		</header>
+		
+		<div class="mui-content">
+			<img id="img_my_face_big" src="" />
+		</div>
+		
+		<!-- 弹出式菜单 -->
+		<div id="sheet-myface" class="mui-popover mui-popover-bottom mui-popover-action ">
+			<!-- 可选择菜单 -->
+			<ul class="mui-table-view">
+			  <li class="mui-table-view-cell">
+				<a id="link_choosePic" href="#">选择图片</a>
+			  </li>
+			  <li class="mui-table-view-cell">
+				<a id="link_savePic" href="#">下载图片</a>
+			  </li>
+			</ul>
+			<!-- 取消菜单 -->
+			<ul class="mui-table-view">
+			  <li class="mui-table-view-cell">
+				<a href="#sheet-myface"><b>取消</b></a>
+			  </li>
+			</ul>
+		</div>
+		
+		
+		<script src="js/mui.js"></script>
+		<script src="js/app.js" ></script>
+		<script type="text/javascript">
+			mui.init()
+			
+			mui.plusReady(function () {
+			    
+				refreshFace();
+				
+				//添加自定义事件, 刷新用户的头像
+				window.addEventListener("refresh",function(){
+					refreshFace();
+				})
+				
+				//获取手机端可见屏幕的宽度
+				var imgWidth = document.body.clientWidth;
+				img_my_face_big.width = imgWidth;
+				img_my_face_big.height = imgWidth;
+				
+				//为...添加点击事件
+				var openWindow =  document.getElementById("openMenu");
+				openWindow.addEventListener("tap",function(){
+					mui('#sheet-myface').popover('toggle');
+				})
+				
+				//为选择照片添加点击事件
+				var link_choosePic = document.getElementById("link_choosePic");
+				link_choosePic.addEventListener("tap",function(){
+					mui('#sheet-myface').popover('toggle');
+					//打开cropper页面
+					mui.openWindow({
+						url: "plugin/v3.1.6/myface-uploader.html",
+						id: "myface-uploader.html",
+						//是否重复创建同样id的webview，默认为false:不重复创建，直接显示
+						createNew: true});
+				})
+				
+				//为下载照片添加点击事件
+				var link_savePic = document.getElementById("link_savePic");
+				link_savePic.addEventListener("tap",function(){
+					mui('#sheet-myface').popover('toggle');
+					
+					plus.nativeUI.showWaiting("下载中……");
+					
+					var user = app.getUserGlobalInfo();
+					var faceImageBig = user.faceImageBig;
+					
+					//创建下载任务
+					var dTask = plus.downloader.createDownload(
+						app.imgServerUrl + faceImageBig,
+						{},
+						function(data,status){
+							plus.nativeUI.closeWaiting();
+							//下载完成
+							if(status == 200){
+								//获取下载的临时地址
+								var savePath = data.filename;
+								//调用相册保存到本地
+								plus.gallery.save(savePath, function(){
+									app.showToast("下载图片成功","success");
+								})
+							}else{
+								app.showToast("下载失败","error");
+								console.log("下载错误……");
+							}
+						});
+					//开启下载任务
+					dTask.start();
+					
+				})
+				
+			});
+			
+			function refreshFace(){
+				//获取用户信息,刷新头像
+				var user = app.getUserGlobalInfo();
+				var img_my_face_big = document.getElementById("img_my_face_big");
+				
+				if(user != null){
+					var faceImageBig = user.faceImageBig;
+					if(app.isNotNull(faceImageBig)){
+						//http://192.168.0.119:88/group1/M00/00/00/wKgAd10YYU2AdKwKAACFrpyJFzs94.jpeg
+						img_my_face_big.src = app.imgServerUrl + faceImageBig;
+					}
+				}
+			}
+			
+		</script>
+	</body>
+
+</html>

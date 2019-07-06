@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="js/mui.js"></script>
+		<link href="css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/header.css" />
+
+		<style>
+
+			#scanComponent {
+				width: 100%;
+				position: absolute;
+				top: 44px;
+				bottom: 0px;
+				background: #000000;
+				text-align: center;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+
+		<header class="mui-bar mui-bar-nav title" style="position: fixed;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left title-color"></a>
+			<h1 class="mui-title title-color"><b id="chatting-nickname">扫一扫</b></h1>
+		</header>
+
+		<!-- 定义扫一扫框体 -->
+		<div id="scanComponent"></div>
+
+		<script type="application/javascript" src="js/app.js"></script>
+		<script type="text/javascript">
+			mui.init();
+
+
+			mui.plusReady(function() {
+				setTimeout("startScan()", "100");
+				// startScan();
+			});
+
+			var scan = null;
+
+			function startScan() {
+				var styles = {
+					frameColor: "#128E12",
+					scanbarColor: "#0062CC",
+					background: ""
+				};
+
+				scan = new plus.barcode.Barcode('scanComponent', null, styles);
+				//设置回调
+				scan.onmarked = onmarked;
+				//开启扫码
+				scan.start();
+
+			}
+
+			//扫码成功的回调
+			function onmarked(type, result) {
+				console.log("type:" + type);
+				console.log("result:" + result);
+				//如果扫描的是QRcode,进行后台联调
+				if (type === 0) {
+					//解析二维码内容, 获取用户名
+					var content = result.split("easyChat_qrcode:");
+					var username = content[1];
+					//进行用户名查找程序,发送ajax请求,查询该用户
+					var user = app.getUserGlobalInfo();
+					mui.ajax(app.serverUrl + '/user/searchFriends?myUserId=' + user.id + '&username=' + username, {
+						data: {},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							//服务器返回响应,ResponseResult类型
+							plus.nativeUI.closeWaiting();
+							if (data.status == 200) {
+								console.log("查找到该用户,可以进行添加")
+								//可以添加好友
+								mui.openWindow({
+									url: "searchFriendsResult.html",
+									id: "searchFriendsResult.html",
+									style: {},
+									//传递添加的好友的信息
+									extras: {
+										add_friend : data.data
+									}
+								});
+							} else {
+								app.showToast(data.msg, "error");
+							}
+						},
+					});
+				}
+				scan.start();
+			}
+		</script>
+	</body>
+
+</html>
