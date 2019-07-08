@@ -3,17 +3,17 @@ window.app = {
 	/**
 	 * netty服务后端发布地址
 	 */
-	nettyServerUrl : "ws://192.168.0.104:9999/ws",
+	nettyServerUrl : "ws://106.12.61.108:9999/ws",
 	
 	/**
 	 * 服务后端发布地址
 	 */
-	serverUrl : "http://192.168.0.104:8080/",
+	serverUrl : "http://106.12.61.108:8080/",
 	
 	/**
 	 * 图片服务器地址
 	 */
-	imgServerUrl : "http://192.168.0.119:88/group1/",
+	imgServerUrl : "http://106.12.61.108:88/group1/",
 	
 	/**
 	 * 判断字符串是否为空
@@ -370,5 +370,5 @@ window.app = {
 	},
 	
 	//客户端定时发送心跳的时间间隔（ms），默认为10s
-	KEEPALIVEINTERVAL: 10000
+	KEEPALIVEINTERVAL: 58000
 }

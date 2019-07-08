@@ -93,7 +93,7 @@
 				indexWebView.append(chatPage);
 			}
 			//设置默认显示的页面
-			plus.webview.show(easychatArray[0].pageId);
+			plus.webview.show("easychat-chatList.html");
 			
 			//批量绑定tap事件,展示不同的页面
 			//思路: 点击事件,传递点击的子页面的id,显示当前页面,同时隐藏其他页面
@@ -112,8 +112,7 @@
 			})
 		
 			//延时加载
-			setTimeout("initData()","200");
-		
+			setTimeout("initData()","200");		
 		})
 		
 		// 监听网络状态更改
@@ -142,6 +141,7 @@
 			var easychat_me = plus.webview.getWebviewById("easychat-me.html");
 			mui.fire(easychat_me,"refresh");
 		}
+				
 	</script>
 </body>
 </html>

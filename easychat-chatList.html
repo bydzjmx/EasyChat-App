@@ -130,7 +130,7 @@
 					var user = app.getUserGlobalInfo();
 					app.readUserChatSnapshot(user.id,friendUserId);
 					// 渲染快照列表进行展示
-					loadChatSnapshot();
+					setTimeout("loadChatSnapshot()",200);
 				});
 				
 				//左滑添加删除事件
@@ -256,7 +256,7 @@
 						console.log("重新打开websocket连接")
 						CHAT.init();
 						//设置重发的延时
-						setTimeout("CHAT.reChat('" + msg + "')", "1000");
+						setTimeout("CHAT.reChat('" + msg + "')", 1000);
 					}
 					// 渲染快照列表进行展示
 					loadChatSnapshot();
@@ -328,6 +328,7 @@
 									//处理请求事件,type为1代表通过
 									//console.log("通过");
 									operatorFriendRequest(user.id,friendId,1);
+									//TODO 将添加的好友增加到快照中
 								});
 							}else{
 								ul_friend_request_list.innerHTML = "";
@@ -340,42 +341,44 @@
 			//展示聊天快照,渲染列表
 			function loadChatSnapshot(){
 				var user = app.getUserGlobalInfo();
-				//获取快照列表
-				var chatSnapshotList = app.getUserChatSnapshot(user.id);
-				var chatItemHtml = "";
-				var ul_chatSnapshot = document.getElementById("ul_chatSnapshot");
-				//清空原列表
-				ul_chatSnapshot.innerHTML = "";
-				//执行渲染
-				for (var i = 0 ; i < chatSnapshotList.length ; i++) {
-					//1. 获取每一个快照元素
-					var chatItem = chatSnapshotList[i];
-					//2. 根据快照元素获取朋友friendId
-					var friendId = chatItem.friendId;
-					//3. 根据friendId从本地联系人列表的缓存中拿到friend相关信息
-					var friend = app.getFriendFromContactList(friendId);
-					// 判断消息的已读或未读状态
-					var isRead = chatItem.isRead;
-					var readHtmlBefore = '';
-					var readHtmlAfter = '';
-					if (!isRead) {
-						readHtmlBefore = '<span class="red-point">';
-						readHtmlAfter = '</span>';
+				if( user != null){
+					//获取快照列表
+					var chatSnapshotList = app.getUserChatSnapshot(user.id);
+					var chatItemHtml = "";
+					var ul_chatSnapshot = document.getElementById("ul_chatSnapshot");
+					//清空原列表
+					ul_chatSnapshot.innerHTML = "";
+					//执行渲染
+					for (var i = 0 ; i < chatSnapshotList.length ; i++) {
+						//1. 获取每一个快照元素
+						var chatItem = chatSnapshotList[i];
+						//2. 根据快照元素获取朋友friendId
+						var friendId = chatItem.friendId;
+						//3. 根据friendId从本地联系人列表的缓存中拿到friend相关信息
+						var friend = app.getFriendFromContactList(friendId);
+						// 判断消息的已读或未读状态
+						var isRead = chatItem.isRead;
+						var readHtmlBefore = '';
+						var readHtmlAfter = '';
+						if (!isRead) {
+							readHtmlBefore = '<span class="red-point">';
+							readHtmlAfter = '</span>';
+						}
+						
+						chatItemHtml =  '<li friendId="' + friendId + '" friendNickname="' + friend.friendNickname + '" friendFaceImage="' + friend.friendFaceImage + '" class="chat-with-friend mui-table-view-cell mui-media">' +
+											'<div class="mui-slider-right mui-disabled">' +
+												'<a id="link_delChatRecord" friendId="' + friendId + '" class="mui-btn mui-btn-red">删除</a>' +
+											'</div>' +
+											'<div class="mui-slider-handle mui-media-body ">' +
+									            '<img class="mui-media-object mui-pull-left" src="' + app.imgServerUrl + friend.friendFaceImage + '"/>' +
+									            	readHtmlBefore + friend.friendNickname + readHtmlAfter + 
+									            '<p class="mui-ellipsis">' + chatItem.msg + '</p>' +
+								            '</div>' +
+									    '</li>';
+						ul_chatSnapshot.insertAdjacentHTML('beforeend', chatItemHtml);
+						//console.log("渲染快照页面完成");
 					}
-					
-					chatItemHtml =  '<li friendId="' + friendId + '" friendNickname="' + friend.friendNickname + '" friendFaceImage="' + friend.friendFaceImage + '" class="chat-with-friend mui-table-view-cell mui-media">' +
-										'<div class="mui-slider-right mui-disabled">' +
-											'<a id="link_delChatRecord" friendId="' + friendId + '" class="mui-btn mui-btn-red">删除</a>' +
-										'</div>' +
-										'<div class="mui-slider-handle mui-media-body ">' +
-								            '<img class="mui-media-object mui-pull-left" src="' + app.imgServerUrl + friend.friendFaceImage + '"/>' +
-								            	readHtmlBefore + friend.friendNickname + readHtmlAfter + 
-								            '<p class="mui-ellipsis">' + chatItem.msg + '</p>' +
-							            '</div>' +
-								    '</li>';
-					ul_chatSnapshot.insertAdjacentHTML('beforeend', chatItemHtml);
-					//console.log("渲染快照页面完成");
-				}
+				}			
 			}
 			
 			//获取个人未接受到的消息

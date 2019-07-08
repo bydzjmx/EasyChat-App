@@ -124,7 +124,9 @@
 				var user_logout = document.getElementById("user_logout");
 				user_logout.addEventListener("tap",function(){
 					app.userLogout();
+					//清空indexWebview,保证重新登录后可以刷新用户信息					
 					mui.openWindow("login.html","login.html");
+					setTimeout("closeIndex()",500);
 				})
 			});
 			
@@ -152,6 +154,10 @@
 						img_my_face.src = app.imgServerUrl + faceImage;
 					}
 				}
+			}
+			
+			function closeIndex(){
+				plus.webview.close("index.html","none",0,"auto");
 			}
 			
 		</script>

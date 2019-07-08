@@ -54,7 +54,7 @@
 							<h5>EasyChat</h5>
 						</span>
 						<span class="login100-form-avatar">
-							<img id="img_login_face" src="css/registLogin/arrow.jpg" alt="头像">
+							<img id="img_login_face" src="css/registLogin/bear.jpeg" alt="头像">
 						</span>
 
 						<div class="wrap-input100 validate-input m-t-85 m-b-35">
@@ -116,15 +116,19 @@
 					//阻止默认事件,阻止原生表单提交
 					e.preventDefault();
 					
+					// 获取每台手机的唯一cid
+					var cid = plus.push.getClientInfo().clientid;
+					console.log(cid);
 					/**
 					 * 开启前后端的联调,使用ajax完成交互
 					 */
 					//此处为controller中前后端交互uri
-					mui.ajax('http://192.168.0.104:8080/user/registerOrLogin',{
+					mui.ajax(app.serverUrl + '/user/registerOrLogin',{
 						//data: 发送到服务器的业务数据,此处为账号和密码
 						data:{
 							username: username.value,
-							password: txt_password.value
+							password: txt_password.value,
+							cid: cid
 						},
 						dataType:'json',//服务器返回json格式数据
 						type:'post',//HTTP请求类型
@@ -142,7 +146,12 @@
 								//存储用户信息
 								app.setUserGlobalInfo(userInfoJson);
 								//跳转页面
-								mui.openWindow("index.html","index.html");
+								mui.openWindow({
+									url: "index.html",
+									id: "index.html",
+									styles:{}
+								});
+								
 							}else{
 								//登陆失败,状态码为500
 								app.showToast(data.msg,"error");
@@ -157,7 +166,7 @@
 				})
 
 			})
-					
+				
 		</script>
 	</body>
 

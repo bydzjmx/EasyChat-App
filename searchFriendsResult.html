@@ -100,6 +100,8 @@
 								
 								app.showToast("好友请求已发送...", "success");
 								
+								plus.webview.currentWebview().close();
+								
 								mui.openWindow({
 									url: "index.html",
 									id: "index.html"
