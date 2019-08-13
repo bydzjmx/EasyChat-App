@@ -32,9 +32,6 @@
         "Messaging" : {
             "description" : "访问通讯能力"
         },
-        "Maps" : {
-            "description" : "管理地图插件"
-        },
         "Speech" : {
             "description" : "管理语音识别插件"
         },
