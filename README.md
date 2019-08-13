@@ -14,11 +14,10 @@
 
 ## 安卓版V1.0版
 欢迎扫码下载apk测试
-
+![image](https://github.com/bydzjmx/EasyChat-Netty/blob/master/images/screenshots/easychat v1.0.png)
 
 ## API文档
 使用ShowDoc生成项目文档，文档地址：https://www.showdoc.cc/easychat
-![image](https://github.com/bydzjmx/EasyChat-Netty/blob/master/images/screenshots/easychat v1.0.png)
 
 # APP截图
 <img src="https://github.com/bydzjmx/EasyChat-Netty/blob/master/images/screenshots/login.jpg" width="20%" height="20%"><img src="https://github.com/bydzjmx/EasyChat-Netty/blob/master/images/screenshots/chatList.jpg" width="20%" height="20%"><img src="https://github.com/bydzjmx/EasyChat-Netty/blob/master/images/screenshots/contact.jpg" width="20%" height="20%"><img src="https://github.com/bydzjmx/EasyChat-Netty/blob/master/images/screenshots/discovery.jpg" width="20%" height="20%"><img src="https://github.com/bydzjmx/EasyChat-Netty/blob/master/images/screenshots/userInfo.jpg" width="20%" height="20%">
