@@ -13,7 +13,7 @@
 使用个推进行APP端消息的推送，使用前后端心跳保持WebSocket连接。
 
 ## 安卓版V1.0版
-欢迎扫码下载apk测试   
+欢迎扫码下载apk测试，或到releases中下载   
 <img src="https://github.com/bydzjmx/EasyChat-App/blob/master/image/easychat%20v1.0.png">
 
 ## API文档
