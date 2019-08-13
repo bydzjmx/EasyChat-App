@@ -2,7 +2,7 @@
 
 一款使用Netty+SpringBoot+MUI+HTML5+制作的仿微信的聊天APP，包括聊天，通讯录，发现，个人等模块。
 
-此为前端页面，后端工程参照：https://github.com/bydzjmx/EasyChat-Netty
+此为前端App，后端工程参照：https://github.com/bydzjmx/EasyChat-Netty
 
 ## 功能说明
 
@@ -12,8 +12,13 @@
 个人界面提供头像修改、昵称修改等功能。
 使用个推进行APP端消息的推送，使用前后端心跳保持WebSocket连接。
 
+## 安卓版V1.0版
+欢迎扫码下载apk测试
+
+
 ## API文档
 使用ShowDoc生成项目文档，文档地址：https://www.showdoc.cc/easychat
+![image](https://github.com/bydzjmx/EasyChat-Netty/blob/master/images/screenshots/easychat v1.0.png)
 
 # APP截图
 <img src="https://github.com/bydzjmx/EasyChat-Netty/blob/master/images/screenshots/login.jpg" width="20%" height="20%"><img src="https://github.com/bydzjmx/EasyChat-Netty/blob/master/images/screenshots/chatList.jpg" width="20%" height="20%"><img src="https://github.com/bydzjmx/EasyChat-Netty/blob/master/images/screenshots/contact.jpg" width="20%" height="20%"><img src="https://github.com/bydzjmx/EasyChat-Netty/blob/master/images/screenshots/discovery.jpg" width="20%" height="20%"><img src="https://github.com/bydzjmx/EasyChat-Netty/blob/master/images/screenshots/userInfo.jpg" width="20%" height="20%">
